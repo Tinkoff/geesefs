@@ -34,6 +34,7 @@ type S3Config struct {
 	SharedConfig    []string
 	AccessKey       string
 	SecretKey       string
+	Referer         string
 	RoleArn         string
 	RoleExternalId  string
 	RoleSessionName string

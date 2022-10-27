@@ -154,6 +154,12 @@ func NewApp() (app *cli.App) {
 			Usage: "The header to use for authenticating with IAM token",
 		},
 
+		/// https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-use-case-4
+		cli.StringFlag{
+			Name:  "referer",
+			Usage: "The referer aws request header to be added to aws requests",
+		},
+
 		cli.StringFlag{
 			Name:  "region",
 			Value: s3Default.Region,
@@ -660,6 +666,7 @@ func PopulateFlags(c *cli.Context) (ret *FlagStorage) {
 		config.NoChecksum    = c.Bool("no-checksum")
 		config.UseIAM        = c.Bool("iam")
 		config.IAMHeader     = c.String("iam-header")
+		config.Referer       = c.String("referer")
 		config.MultipartAge  = c.Duration("multipart-age")
 		listType := c.String("list-type")
 		if listType == "" {

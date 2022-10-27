@@ -198,6 +198,12 @@ func (s *S3Backend) setV2Signer(handlers *request.Handlers) {
 	handlers.Sign.PushBackNamed(corehandlers.BuildContentLengthHandler)
 }
 
+func (s *S3Backend) addAWSRequestHeaders(req *request.Request) {
+	if s.config.Referer != "" {
+		req.HTTPRequest.Header.Set("Referer", s.config.Referer)
+	}
+}
+
 func (s *S3Backend) newS3() {
 	s.S3 = s3.New(s.config.Session, s.awsConfig)
 	if s.config.RequesterPays {
@@ -215,6 +221,7 @@ func (s *S3Backend) newS3() {
 		Fn: request.MakeAddToUserAgentHandler("GeeseFS", GEESEFS_VERSION,
 			runtime.Version(), runtime.GOOS, runtime.GOARCH),
 	})
+	s.S3.Handlers.Build.PushBack(s.addAWSRequestHeaders)
 }
 
 func (s *S3Backend) detectBucketLocationByHEAD() (err error, isAws bool) {

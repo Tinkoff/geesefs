@@ -80,8 +80,9 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	. "gopkg.in/check.v1"
 	"runtime/debug"
+
+	. "gopkg.in/check.v1"
 
 	bench_embed "github.com/yandex-cloud/geesefs/bench"
 	test_embed "github.com/yandex-cloud/geesefs/test"
