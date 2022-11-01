@@ -487,6 +487,11 @@ func (s *S3Backend) HeadBlob(param *HeadBlobInput) (*HeadBlobOutput, error) {
 	req, resp := s.S3.HeadObjectRequest(&head)
 	err := req.Send()
 	if err != nil {
+		// s3/HeadObject returns 403 instead of 404 when
+		// key doesn't exist
+		if err := mapAwsError(err); err == syscall.EACCES {
+			return nil, fuse.ENOENT
+		}
 		return nil, err
 	}
 	return &HeadBlobOutput{
